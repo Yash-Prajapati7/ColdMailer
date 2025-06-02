@@ -10,7 +10,6 @@ dotenv.config();
 const loginStatus = async (req, res) => {
     if (req.cookies.token) {
         console.log("isAuthenticated: true");
-        
         res.json({ isAuthenticated: true });
     } else {
         console.log("isAuthenticated: false");
