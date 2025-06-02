@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export default function Index() {
     const [emailInput, setEmailInput] = useState("");
     const [subject, setSubject] = useState("");
@@ -15,23 +17,19 @@ export default function Index() {
         e.preventDefault();
 
         try {
-            // Create a FormData object to send both text fields and the file
             const formData = new FormData();
             formData.append("emails", emailInput);
             formData.append("subject", subject);
             formData.append("body", body);
 
-            // Conditionally append the attachment if it exists
             if (attachment) {
-                formData.append("attachment", attachment); // "attachment" must match the name used in Multer's upload.single() on the server
+                formData.append("attachment", attachment);
             }
 
-            // Send all data in a single request to the sendEmails endpoint
             await axios.post('https://coldmailer-aw4c.onrender.com/v1/sendEmails', formData, {
-                headers: { "Content-Type": "multipart/form-data" }, // Important: set content type for FormData
+                headers: { "Content-Type": "multipart/form-data" },
             });
 
-            // Show success modal
             setShowModal(true);
         } catch (error) {
             navigate('/troubles');
@@ -40,104 +38,131 @@ export default function Index() {
     };
 
     const modalChange = () => {
-        setShowModal(false)
-        setEmailInput("")
-        setBody("")
-        setSubject("")
-        setAttachment(null)
-    }
+        setShowModal(false);
+        setEmailInput("");
+        setBody("");
+        setSubject("");
+        setAttachment(null);
+    };
+
+    const handleFileChange = (e) => {
+        setAttachment(e.target.files[0]);
+    };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
-            <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-                <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
-                    <div className="mb-5">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Enter emails (comma separated)
-                        </label>
-                        <input
-                            type="text"
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="email1@example.com, email2@example.com"
-                            value={emailInput}
-                            onChange={(e) => setEmailInput(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-5">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Subject
-                        </label>
-                        <input
-                            type="text"
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Enter subject"
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-5">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Email Body
-                        </label>
-                        <textarea
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Enter email body"
-                            value={body}
-                            onChange={(e) => setBody(e.target.value)}
-                        ></textarea>
-                    </div>
-                    <div className="mb-5">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Attach PDF (optional)
-                        </label>
-                        <input
-                            type="file"
-                            accept=".pdf"
-                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            onChange={(e) => setAttachment(e.target.files[0])}
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        Send Emails
-                    </button>
-                </form>
-            </div>
+        <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+            <h1 className="text-3xl font-bold mb-8">Cold Mailer</h1>
+            <form onSubmit={handleSubmit} className="w-full max-w-lg bg-gray-800 p-8 rounded-lg shadow-lg">
+                <div className="mb-4">
+                    <label htmlFor="emails" className="block text-sm font-medium text-gray-300">
+                        Recipient Emails (comma-separated):
+                    </label>
+                    <input
+                        type="text"
+                        id="emails"
+                        value={emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="email1@example.com, email2@example.com"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-300">
+                        Subject:
+                    </label>
+                    <input
+                        type="text"
+                        id="subject"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Your email subject"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="body" className="block text-sm font-medium text-gray-300">
+                        Body:
+                    </label>
+                    <textarea
+                        id="body"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        rows="5"
+                        className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Your email body content"
+                        required
+                    ></textarea>
+                </div>
+                <div className="mb-6">
+                    <label htmlFor="attachment" className="block text-sm font-medium text-gray-300">
+                        Attachment:
+                    </label>
+                    <input
+                        type="file"
+                        id="attachment"
+                        onChange={handleFileChange}
+                        className="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+                >
+                    Send Emails
+                </button>
+            </form>
 
-            {/* Success Modal */}
             {showModal && (
                 <div
-                    id="successModal"
+                    id="success-modal"
                     tabIndex="-1"
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                    aria-hidden="true"
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-gray-900 bg-opacity-75"
                 >
-                    <div className="relative p-4 w-full max-w-md">
-                        <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                    <div className="relative w-full max-w-md max-h-full">
+                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                             <button
                                 type="button"
-                                className="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                onClick={() => setShowModal(false)}
+                                className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={modalChange}
                             >
                                 <svg
+                                    className="w-3 h-3"
                                     aria-hidden="true"
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
                                 >
                                     <path
-                                        fillRule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                                     ></path>
                                 </svg>
+                                <span className="sr-only">Close modal</span>
                             </button>
-                            <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                            <div className="p-6 text-center">
                                 <svg
+                                    className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
                                     aria-hidden="true"
-                                    className="w-8 h-8 text-green-500 dark:text-green-400"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    ></path>
+                                </svg>
+                                <svg
+                                    className="mx-auto mb-4 text-green-600 w-12 h-12"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"

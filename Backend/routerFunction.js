@@ -1,4 +1,3 @@
-// routerFunction.js
 import jwt from 'jsonwebtoken';
 import { User } from './user.models.js';
 import { sendMails } from './sendEmails.js';
@@ -131,7 +130,7 @@ const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            sameSite: "Strict",
+            sameSite: "None", // CHANGED FROM "Strict" to "None"
             maxAge: 60 * 60 * 1000,
         });
 
