@@ -51,7 +51,6 @@ export default function Index() {
 
     return (
         <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
-            <h1 className="text-3xl font-bold mb-8">Cold Mailer</h1>
             <form onSubmit={handleSubmit} className="w-full max-w-lg bg-gray-800 p-8 rounded-lg shadow-lg">
                 <div className="mb-4">
                     <label htmlFor="emails" className="block text-sm font-medium text-gray-300">
@@ -115,79 +114,60 @@ export default function Index() {
             </form>
 
             {showModal && (
-                <div
-                    id="success-modal"
-                    tabIndex="-1"
-                    aria-hidden="true"
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-gray-900 bg-opacity-75"
-                >
-                    <div className="relative w-full max-w-md max-h-full">
-                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <button
-                                type="button"
-                                className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                onClick={modalChange}
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+                    <div className="relative w-full max-w-sm bg-gray-800 text-white rounded-xl shadow-2xl p-6">
+                        <button
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
+                            onClick={modalChange}
+                        >
+                            <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
                             >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+
+                        <div className="flex flex-col items-center justify-center">
+                            <div className="bg-green-700 rounded-full p-3 mb-4">
                                 <svg
-                                    className="w-3 h-3"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-8 h-8 text-white"
                                     fill="none"
-                                    viewBox="0 0 14 14"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
-                                        stroke="currentColor"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                    ></path>
-                                </svg>
-                                <span className="sr-only">Close modal</span>
-                            </button>
-                            <div className="p-6 text-center">
-                                <svg
-                                    className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                    ></path>
-                                </svg>
-                                <svg
-                                    className="mx-auto mb-4 text-green-600 w-12 h-12"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                    ></path>
+                                        d="M5 13l4 4L19 7"
+                                    />
                                 </svg>
                             </div>
-                            <p className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                                Successfully sent emails.
+                            <h2 className="text-xl font-semibold mb-2">Emails Sent Successfully</h2>
+                            <p className="text-sm text-gray-300 mb-4 text-center">
+                                Your email has been delivered to the recipients.
                             </p>
                             <button
-                                type="button"
-                                className="py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-900 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-900"
                                 onClick={modalChange}
+                                className="bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-md text-sm font-medium"
                             >
-                                Continue
+                                Close
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
