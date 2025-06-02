@@ -7,7 +7,7 @@ export default function Header() {
 
   const checkAuth = async (isMounted) => {
     try {
-      const response = await axios.get("/v1/auth/status");
+      const response = await axios.get("/v1/auth/status", { withCredentials: true }); // Added withCredentials: true
       if (isMounted.current) {
         setIsLoggedIn(response.data.isAuthenticated);
       }
@@ -29,7 +29,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/v1/auth/logout");
+      await axios.post("/v1/auth/logout", {}, { withCredentials: true }); // Added withCredentials: true
       setIsLoggedIn(false);
       window.location.reload(); // Refresh page to reflect logout
     } catch (error) {

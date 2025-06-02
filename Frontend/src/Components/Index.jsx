@@ -15,19 +15,21 @@ export default function Index() {
         e.preventDefault();
 
         try {
-            // Send mail details
-            await axios.post("/v1/details", { emails: emailInput, subject, body });
+            // Create a FormData object to send both text fields and the file
+            const formData = new FormData();
+            formData.append("emails", emailInput);
+            formData.append("subject", subject);
+            formData.append("body", body);
 
-            // Send attachments if any
+            // Conditionally append the attachment if it exists
             if (attachment) {
-                const formData = new FormData();
-                formData.append("attachment", attachment);
-                await axios.post("/v1/attachment", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                formData.append("attachment", attachment); // "attachment" must match the name used in Multer's upload.single() on the server
             }
 
-            await axios.post('/v1/sendEmails');
+            // Send all data in a single request to the sendEmails endpoint
+            await axios.post('/v1/sendEmails', formData, {
+                headers: { "Content-Type": "multipart/form-data" }, // Important: set content type for FormData
+            });
 
             // Show success modal
             setShowModal(true);

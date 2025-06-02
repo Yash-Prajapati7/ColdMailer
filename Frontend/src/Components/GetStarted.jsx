@@ -30,7 +30,7 @@ export default function RegisterUser() {
         await axios.put('http://localhost:3000/v1/signup', {
             email: formData.email,
             password: formData.password,
-        })
+        }, { withCredentials: true }) // Added withCredentials: true
         .then(() => navigate("/login")) 
         .catch((error) => { 
             console.error(error);

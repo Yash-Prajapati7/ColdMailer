@@ -1,9 +1,8 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import fs from "fs"
 dotenv.config();
 
-export const sendMails = async (emails, userEmail, userPass, sub, body, filename) => {
+export const sendMails = async (emails, userEmail, userPass, sub, body, fileObject) => {
     try {
         if (!emails || emails.length === 0) {
             return { success: false, message: "Enter at least one email" };
@@ -27,14 +26,13 @@ export const sendMails = async (emails, userEmail, userPass, sub, body, filename
             text: body
         };
 
-        // If filename is provided, add attachments
-        if (filename) {
-            const fileLocation = `${process.env.COLDMAILER_UPLOADS_PATH}\\${filename}`;
-            console.log(fileLocation);
+        // If a fileObject (from req.file) is provided, add attachments
+        if (fileObject) {
             mailOptions.attachments = [
                 {
-                    filename: filename,
-                    path: fileLocation
+                    filename: fileObject.originalname, // Use the original name from the file object
+                    content: fileObject.buffer,        // Use the buffer directly
+                    contentType: fileObject.mimetype   // Use the mimetype from the file object
                 }
             ];
         }

@@ -15,7 +15,7 @@ export default function Login() {
         event.preventDefault();
         let response = null;
         try {
-            response = await axios.put("/v1/login", { email, password }, {validateStatus : validate});
+            response = await axios.put("/v1/login", { email, password }, { validateStatus: validate, withCredentials: true }); // Added withCredentials: true
             navigate('/main');
             console.log("Response:", response.data);
         } catch (error) {

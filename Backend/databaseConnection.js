@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(`${process.env.MONGODB_URI}/ColdMail`);
+    try {        
+        await mongoose.connect(`${process.env.MONGODB_URI}/ColdMailer`);
         console.log("Database successfully connected!");
     }
     catch(error) {

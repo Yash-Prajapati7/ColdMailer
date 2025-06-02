@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAttachments, login, getMailDetails, signup, sendEmail, loginStatus, logout } from "./routerFunction.js";
+import { login, getMailDetails, signup, sendEmail, loginStatus, logout } from "./routerFunction.js";
 import verify from "./authVerify.js";
 import { upload } from "./multer.js";
 
@@ -13,8 +13,7 @@ router.get('/', (req, res) => {
 router.put('/signup', signup);
 router.put('/login', login);
 router.post('/details', verify, getMailDetails);
-router.post('/attachment', verify, upload.single("attachment"), getAttachments);
-router.post('/sendEmails', verify, sendEmail);
+router.post('/sendEmails', verify, upload.single("attachment"), sendEmail);
 router.get('/auth/status', loginStatus);
 router.post('/auth/logout', logout);
 export default router;
