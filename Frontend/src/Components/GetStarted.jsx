@@ -27,7 +27,7 @@ export default function RegisterUser() {
             return;
         }
 
-        await axios.put('http://localhost:3000/v1/signup', {
+        await axios.put('https://coldmailer-aw4c.onrender.com/v1/signup', {
             email: formData.email,
             password: formData.password,
         }, { withCredentials: true }) // Added withCredentials: true

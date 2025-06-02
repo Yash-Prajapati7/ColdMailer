@@ -27,7 +27,7 @@ export default function Index() {
             }
 
             // Send all data in a single request to the sendEmails endpoint
-            await axios.post('/v1/sendEmails', formData, {
+            await axios.post('https://coldmailer-aw4c.onrender.com/v1/sendEmails', formData, {
                 headers: { "Content-Type": "multipart/form-data" }, // Important: set content type for FormData
             });
 
