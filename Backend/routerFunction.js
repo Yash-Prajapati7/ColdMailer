@@ -4,7 +4,6 @@ import { User } from './user.models.js';
 import { sendMails } from './sendEmails.js';
 import CharCryptor from './encryptPass.js';
 import dotenv from "dotenv";
-import { upload } from './multer.js';
 dotenv.config();
 
 const loginStatus = async (req, res) => {
@@ -31,33 +30,6 @@ function userId(req) {
     return jwt.verify(token, process.env.secret).id;
 }
 
-const getMailDetails = async (req, res) => {
-    try {
-        let { emails, subject, body } = req.body;
-        const id = userId(req);
-        if (!id) {
-            console.log("Token null");
-            return res.status(404).json({ message: "Token null" });
-        }
-
-        if (!emails) {
-            return res.status(400).json({ message: "Emails are required" });
-        }
-
-        emails = emails.split(',').map(email => email.trim());
-
-        console.log("Emails received and saved successfully!");
-
-        let user = await User.findByIdAndUpdate(id, { emails, subject, body }, { new: true });
-
-        console.log("Mail details received successfully");
-
-        return res.status(200).json({ message: "Mail details received successfully", user });
-    } catch (error) {
-        return res.status(400).json({ message: "Failed to receive mail details.", error: error.message });
-    }
-}
-
 const sendEmail = async (req, res) => {
     try {
         const id = userId(req);
@@ -66,19 +38,29 @@ const sendEmail = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const { emails, subject, body } = user;
-        const { email, password } = user;
+        let { emails, subject, body } = req.body;
 
-        const cryptor = new CharCryptor(user.password);
+        if (typeof emails === 'string') {
+            emails = emails.split(',').map(email => email.trim());
+        }
+
+        const { email: userEmail, password: userStoredEncryptedPassword } = user;
+
+        const cryptor = new CharCryptor(userStoredEncryptedPassword);
         cryptor.encryptionKey = user.encKey;
         cryptor.decrypt();
         const decryptedPassword = cryptor.getEncryptedText();
 
-        if (!emails || !email || !password) {
-            return res.status(400).json({ message: "Add all fields" });
+        if (!emails || emails.length === 0 || !userEmail || !decryptedPassword || !subject || !body) {
+            return res.status(400).json({ message: "All required fields (recipients, subject, body, sender's credentials) must be provided." });
         }
 
-        const response = await sendMails(emails, email, decryptedPassword, subject, body, req.file);
+        let attachmentDetails = null;
+        if (req.file) {
+            attachmentDetails = req.file.filename;
+        }
+
+        const response = await sendMails(emails, userEmail, decryptedPassword, subject, body, attachmentDetails);
 
         if (response.success) {
             console.log("Emails sent!");
@@ -91,7 +73,6 @@ const sendEmail = async (req, res) => {
         return res.status(500).json({ message: "Failed to send emails.", error: err.message });
     }
 };
-
 
 const signup = async (req, res) => {
     try {
@@ -163,13 +144,10 @@ const login = async (req, res) => {
     }
 };
 
-
 export {
     signup,
     login,
-    getMailDetails,
     sendEmail,
     loginStatus,
     logout,
-    upload
-}
+};
