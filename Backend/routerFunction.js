@@ -54,14 +54,12 @@ const sendEmail = async (req, res) => {
             return res.status(400).json({ message: "All required fields (recipients, subject, body, sender's credentials) must be provided." });
         }
 
-        let fileForNodemailer = null; // Variable to hold the file object for nodemailer
-        if (req.file) {
-            // If multer used memoryStorage, req.file contains originalname, mimetype, and buffer
-            fileForNodemailer = req.file;
+        if(req.file) {
+            console.log("Attachment uploaded");
         }
 
         // Pass the file object directly to sendMails
-        const response = await sendMails(emails, userEmail, decryptedPassword, subject, body, fileForNodemailer);
+        const response = await sendMails(emails, userEmail, decryptedPassword, subject, body, req.file);
 
         if (response.success) {
             console.log("Emails sent!");
@@ -132,7 +130,7 @@ const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            sameSite: "None", // Changed for cross-site cookie sending
+            sameSite: "None", // for cross-site cookie sending
             maxAge: 60 * 60 * 1000,
         });
 

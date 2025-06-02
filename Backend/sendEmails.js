@@ -28,6 +28,7 @@ export const sendMails = async (emails, userEmail, userPass, sub, body, fileObje
 
         // If a fileObject (from req.file) is provided, add attachments
         if (fileObject) {
+            console.log("Attachment recieved for sending mail");
             mailOptions.attachments = [
                 {
                     filename: fileObject.originalname, // Use the original name from the file object
