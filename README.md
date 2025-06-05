@@ -7,6 +7,16 @@ ColdMailer is a lightweight, full-stack mailing automation system built to send 
 
 ---
 
+## 🔐 Features Implemented
+
+* User authentication using JWT
+* Password encryption before saving to DB
+* Email sending via secure SMTP
+* File upload handling with Multer
+* Fully responsive frontend UI with Tailwind CSS
+
+---
+
 ## 🔧 Tech Stack
 
 ### Frontend
@@ -109,17 +119,6 @@ ColdMailer/
    ```
 
 ---
-
-## 🔐 Features
-
-* User authentication using JWT
-* Password encryption before saving to DB
-* Email sending via secure SMTP
-* File upload handling with Multer
-* Fully responsive frontend UI with Tailwind CSS
-
----
-
 ## 📌 To Be Implemented
 
 * CSV import for bulk emails
