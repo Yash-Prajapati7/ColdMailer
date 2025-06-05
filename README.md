@@ -78,8 +78,6 @@ ColdMailer/
    PORT=5000
    MONGO_URI=your_mongodb_uri
    JWT_SECRET=your_secret_key
-   EMAIL_USER=your_email@example.com
-   EMAIL_PASS=your_email_password
    ```
 
 4. Start the backend server:
