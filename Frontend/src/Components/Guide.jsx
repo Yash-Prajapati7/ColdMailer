@@ -7,26 +7,26 @@ export default function Guide() {
   const steps = [
     {
       title: "1. Create an App Password",
-      description:
-        "Go to your email provider's security settings and generate an App Password. This is used to send emails securely without using your main password.",
-      image: "https://i.imgur.com/0eZg2Bi.png", // Replace with actual image if needed
+      description: "Watch this YouTube video to generate the App Password.",
+      video: "https://www.youtube.com/embed/MkLX85XU5rU",
     },
     {
       title: "2. Click Get Started",
       description:
         "From the homepage, click the 'Get Started' button to begin setting up your cold email campaign.",
-      image: "https://i.imgur.com/zZkJt1N.png",
+      image: "https://res.cloudinary.com/dlxxeq0bh/image/upload/v1750852917/Step_2_g9b5xu.png",
     },
     {
       title: "3. Login with Email & App Password",
       description:
         "Login using the email ID and the app password you generated in Step 1. This connects your email to our sender.",
-      image: "https://i.imgur.com/MrRuJjV.png",
+      image: "https://res.cloudinary.com/dlxxeq0bh/image/upload/v1750852918/Step_3_j4vaga.png",
     },
     {
       title: "4. Add Recipients",
       description:
         "Enter the email addresses of your recipients (separated by commas or line breaks). These are the people who will receive your cold emails.",
+      image: "https://res.cloudinary.com/dlxxeq0bh/image/upload/v1750853466/step_4_wtqgua.png",
     },
     {
       title: "5. Compose Your Email",
@@ -52,6 +52,18 @@ export default function Guide() {
                 {step.title}
               </h2>
               <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+              {step.video && (
+                <div className="aspect-w-16 aspect-h-9">
+                  <iframe
+                    src={step.video}
+                    title={step.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full rounded-lg shadow-md border border-gray-200 dark:border-gray-600"
+                  ></iframe>
+                </div>
+              )}
             </div>
             {step.image && (
               <img
