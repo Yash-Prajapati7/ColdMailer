@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { Mail } from "lucide-react";
 import axios from "axios";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const checkAuth = async (isMounted) => {
     try {
@@ -13,42 +23,69 @@ export default function Header() {
       }
     } catch (error) {
       if (isMounted.current) {
-        setIsLoggedIn(false); // If request fails, assume not logged in
+        setIsLoggedIn(false);
       }
     }
   };
   
   useEffect(() => {
-    let isMounted = { current: true }; // This ensures cleanup
+    let isMounted = { current: true };
     checkAuth(isMounted);
-  
     return () => {
-      isMounted.current = false; // Prevents setting state on unmounted component
+      isMounted.current = false;
     };
   }, []);
 
   const handleLogout = async () => {
     try {
-      await axios.post("https://coldmailer-aw4c.onrender.com/v1/auth/logout", {}, { withCredentials: true }); // Added withCredentials: true
+      await axios.post("https://coldmailer-aw4c.onrender.com/v1/auth/logout", {}, { withCredentials: true });
       setIsLoggedIn(false);
-      window.location.reload(); // Refresh page to reflect logout
+      window.location.reload();
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
 
+  const navLinkClasses = ({ isActive }) =>
+    `relative font-medium text-sm tracking-wide transition-colors duration-300 ${
+      isActive ? "text-lavender-600" : "text-slate-600 hover:text-lavender-600"
+    } group`;
+
   return (
-    <header className="shadow sticky z-50 top-0">
-      <nav className="bg-asterosNavy border-white px-4 lg:px-6 py-2.5">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link to="/" className="flex items-center">
-            <h1 className="logo">Cold Mailer</h1>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${
+      scrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
+    }`}>
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 bg-lavender-600 rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+              <Mail size={20} />
+            </div>
+            <span className="font-display font-bold text-xl tracking-tight text-slate-900 group-hover:text-lavender-600 transition-colors">
+              ColdMailer
+            </span>
           </Link>
-          <div className="flex items-center lg:order-2">
+
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLink to="/" className={navLinkClasses}>
+              Home
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lavender-600 transition-all duration-300 group-hover:w-full"></span>
+            </NavLink>
+            <NavLink to="/about" className={navLinkClasses}>
+              About
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lavender-600 transition-all duration-300 group-hover:w-full"></span>
+            </NavLink>
+            <NavLink to="/contact" className={navLinkClasses}>
+              Contact
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lavender-600 transition-all duration-300 group-hover:w-full"></span>
+            </NavLink>
+          </div>
+
+          <div className="flex items-center gap-4">
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 focus:outline-none"
+                className="px-5 py-2 text-sm font-medium text-white bg-slate-900 rounded-full hover:bg-slate-800 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
               >
                 Log out
               </button>
@@ -56,73 +93,18 @@ export default function Header() {
               <>
                 <Link
                   to="/login"
-                  className="text-white hover:bg-azure focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                  className="text-sm font-medium text-slate-600 hover:text-lavender-600 transition-colors"
                 >
                   Log in
                 </Link>
                 <Link
                   to="/signup"
-                  className="text-white bg-orange-600 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                  className="px-5 py-2 text-sm font-medium text-white bg-lavender-600 rounded-full hover:bg-lavender-700 transition-all duration-300 hover:shadow-lg hover:shadow-lavender-500/30 hover:-translate-y-0.5"
                 >
-                  Get started
+                  Get Started
                 </Link>
               </>
             )}
-          </div>
-          <div
-            className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
-            id="mobile-menu-2"
-          >
-            <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `block py-2 pr-4 pl-3 duration-200 ${
-                      isActive ? "text-customOrange" : "text-white"
-                    } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-customOrange lg:p-0`
-                  }
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) =>
-                    `block py-2 pr-4 pl-3 duration-200 ${
-                      isActive ? "text-customOrange" : "text-white"
-                    } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-customOrange lg:p-0`
-                  }
-                >
-                  About
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/contact"
-                  className={({ isActive }) =>
-                    `block py-2 pr-4 pl-3 duration-200 ${
-                      isActive ? "text-customOrange" : "text-white"
-                    } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-customOrange lg:p-0`
-                  }
-                >
-                  Contact
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/privacy"
-                  className={({ isActive }) =>
-                    `block py-2 pr-4 pl-3 duration-200 ${
-                      isActive ? "text-customOrange" : "text-white"
-                    } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-customOrange lg:p-0`
-                  }
-                >
-                  Privacy
-                </NavLink>
-              </li>
-            </ul>
           </div>
         </div>
       </nav>

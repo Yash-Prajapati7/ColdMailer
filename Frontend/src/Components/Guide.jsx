@@ -36,49 +36,54 @@ export default function Guide() {
   ];
 
   return (
-    <div className="px-4 py-10 bg-white min-h-screen dark:bg-gray-900">
+    <div className="px-4 pt-32 pb-16 bg-slate-50 min-h-screen">
       <div className="max-w-4xl mx-auto space-y-12">
-        <h1 className="text-4xl font-bold text-center text-violet-600 dark:text-violet-400">
-          How to Use Cold Mailer
-        </h1>
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900">
+            How to Use <span className="text-lavender-600">ColdMailer</span>
+          </h1>
+          <p className="text-xl text-slate-600">Master your outreach in 5 simple steps</p>
+        </div>
 
         {steps.map((step, index) => (
           <div
             key={index}
-            className="flex flex-col md:flex-row items-center gap-6 md:gap-12 bg-violet-50 dark:bg-gray-800 border border-violet-200 dark:border-violet-400 p-6 rounded-xl shadow hover:shadow-md transition duration-300"
+            className="group flex flex-col md:flex-row items-center gap-8 bg-white border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-lavender-100 transition-all duration-300 hover:-translate-y-1"
           >
-            <div className="flex-1 space-y-3">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            <div className="flex-1 space-y-4">
+              <h2 className="text-2xl font-display font-bold text-slate-900 group-hover:text-lavender-600 transition-colors">
                 {step.title}
               </h2>
-              <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+              <p className="text-slate-600 leading-relaxed">{step.description}</p>
               {step.video && (
-                <div className="aspect-w-16 aspect-h-9">
+                <div className="aspect-w-16 aspect-h-9 mt-4 rounded-xl overflow-hidden shadow-lg">
                   <iframe
                     src={step.video}
                     title={step.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className="w-full rounded-lg shadow-md border border-gray-200 dark:border-gray-600"
+                    className="w-full h-full"
                   ></iframe>
                 </div>
               )}
             </div>
             {step.image && (
-              <img
-                src={step.image}
-                alt={step.title}
-                className="w-full md:w-60 rounded-lg shadow-md border border-gray-200 dark:border-gray-600"
-              />
+              <div className="w-full md:w-1/3">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="w-full rounded-xl shadow-md border border-slate-100 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             )}
           </div>
         ))}
 
-        <div className="text-center pt-10">
+        <div className="text-center pt-12">
           <button
             onClick={() => navigate("/signup")}
-            className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white text-lg font-medium rounded-xl shadow transition duration-300"
+            className="px-10 py-4 bg-lavender-600 text-white text-lg font-medium rounded-full shadow-lg shadow-lavender-500/30 hover:bg-lavender-700 hover:-translate-y-1 transition-all duration-300 glow-effect"
           >
             Ready to Start? Sign Up
           </button>

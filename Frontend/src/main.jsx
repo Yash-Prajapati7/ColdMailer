@@ -11,6 +11,7 @@ import GetStarted from './Components/GetStarted.jsx';
 import Login from './Components/Login.jsx';
 import Troubles from './Components/Troubles.jsx';
 import Index from './Components/Index.jsx';
+import ForgotPassword from './Components/ForgotPassword.jsx';
 import './index.css'
 import Guide from './Components/Guide.jsx';
 
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="signup" element={<GetStarted />} />
       <Route path="login" element={<Login />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
       <Route path="troubles" element={<Troubles />} />
       <Route path="main" element={<Index />} />
       <Route path="guide" element={<Guide />} />

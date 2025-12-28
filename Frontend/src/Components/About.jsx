@@ -1,29 +1,42 @@
 import React from "react";
+import { Heart } from "lucide-react";
 
 export default function About() {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
-            <div className="max-w-3xl p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">About the Maker</h2>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Welcome to this platform!
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    This site is created and maintained by a passionate problem solver and a 2nd-year Computer Engineering undergraduate with a deep love for backend development, algorithms, and competitive programming. The maker has honed strong skills in Java, C++, and backend technologies like Node.js.
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    His journey into programming is fueled by a commitment to continuous learning and adaptability. Alongside technical expertise, he possess a knack for collaboration, communication, and leadership—essential skills honed through projects and teamwork in various domains.
-                </p>
-                
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Beyond technical pursuits, he's enthusiastic about contributing to open-source communities and mentoring others in the art of problem-solving. His vision is to create impactful, user-centric solutions that seamlessly blend cutting-edge technologies with everyday needs.
-                </p>
-                <p className="text-gray-700 dark:text-gray-300">
-                    Thank you for visiting this site—built with dedication, expertise, and the desire to make learning and problem-solving accessible and engaging for everyone!
-                </p>
-                <br></br>
-                <p>With Love ❤️</p>
-                <p>~ The Maker</p>
+        <div className="flex items-center justify-center min-h-screen bg-slate-50 p-6 pt-32 pb-16">
+            <div className="max-w-3xl p-10 bg-white rounded-3xl shadow-xl border border-slate-100 animate-slide-up">
+                <h2 className="text-4xl font-display font-bold text-slate-900 mb-6">
+                    About ColdMailer
+                </h2>
+
+                <div className="space-y-4 text-lg text-slate-600 leading-relaxed">
+                    <p>
+                        ColdMailer is a modern, high-impact cold email automation platform designed to revolutionize your outreach strategy.
+                    </p>
+
+                    <p>
+                        Built with precision and user experience in mind, ColdMailer empowers professionals, marketers, and businesses to send personalized, effective cold emails at scale. Our platform combines cutting-edge technology with intuitive design to ensure your messages reach the right audience and drive meaningful engagement.
+                    </p>
+
+                    <p>
+                        With features like high delivery rates, personalized campaign management, easy integrations, and robust security, ColdMailer takes the complexity out of cold emailing. Whether you're a startup founder, sales professional, or marketing expert, our tool adapts to your needs and helps you build authentic connections.
+                    </p>
+
+                    <p>
+                        We believe in ethical outreach practices and providing value to both senders and recipients. That's why we focus on deliverability, personalization, and transparency in every email sent through our platform.
+                    </p>
+
+                    <p>
+                        Join thousands of professionals who have transformed their outreach with ColdMailer. Start building relationships that matter, one email at a time.
+                    </p>
+
+                    <div className="pt-6 font-serif italic text-lavender-600 flex flex-col items-start gap-2">
+                        <p className="flex items-center gap-2">
+                            Made with Love <Heart size={18} className="fill-current" />
+                        </p>
+                        <p>The ColdMailer Team</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

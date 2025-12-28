@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup, sendEmail, loginStatus, logout } from "./routerFunction.js";
+import { login, signup, sendEmail, loginStatus, logout, requestPasswordReset, verifyOtpAndResetPassword } from "./routerFunction.js";
 import verify from "./authVerify.js";
 import { upload } from "./multer.js";
 
@@ -15,4 +15,6 @@ router.put('/login', login);
 router.post('/sendEmails', verify, upload.single("attachment"), sendEmail);
 router.get('/auth/status', loginStatus);
 router.post('/auth/logout', logout);
+router.post('/auth/forgot-password', requestPasswordReset);
+router.post('/auth/reset-password', verifyOtpAndResetPassword);
 export default router;
