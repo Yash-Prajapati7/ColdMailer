@@ -11,7 +11,7 @@ const port = process.env.PORT;
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin : ["https://coldmailer-xi.vercel.app", "http://localhost:5173"],
+    origin : ["https://coldmailer-xi.vercel.app", "http://localhost:5173", "https://coldmailer.yp7.xyz"],
     credentials: true
 }));
 app.use(cookieParser());
